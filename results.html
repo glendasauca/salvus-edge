@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SALVUS — Resultados del Charrette EDGE</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d0f0e;
+  --surface: #141714;
+  --surface2: #1a1d1a;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --text: #e8ead6;
+  --text2: #8a8f7e;
+  --text3: #575c4d;
+  --green: #a8d96a;
+  --green-bg: rgba(168,217,106,0.1);
+  --green-border: rgba(168,217,106,0.25);
+  --yellow: #e6c84a;
+  --yellow-bg: rgba(230,200,74,0.1);
+  --yellow-border: rgba(230,200,74,0.25);
+  --red: #e86b5a;
+  --red-bg: rgba(232,107,90,0.1);
+  --red-border: rgba(232,107,90,0.25);
+  --blue: #6ab4e8;
+  --amber: #e8a84a;
+  --accent: #a8d96a;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Sora', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+.page { max-width: 960px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+
+/* HEADER */
+.header { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
+.header-left {}
+.header-tag { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .18em; color: var(--accent); text-transform: uppercase; margin-bottom: .75rem; }
+h1 { font-size: 2rem; font-weight: 300; letter-spacing: -.02em; line-height: 1.15; margin-bottom: .4rem; }
+h1 span { color: var(--accent); font-weight: 600; }
+.header-meta { font-size: 12px; color: var(--text2); font-family: 'DM Mono', monospace; }
+.refresh-area { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+.refresh-status { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text3); display: flex; align-items: center; gap: 6px; }
+.pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+.btn-refresh { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border2); background: var(--surface2); color: var(--text2); cursor: pointer; transition: all .15s; }
+.btn-refresh:hover { color: var(--text); border-color: var(--accent); }
+
+/* STAT CARDS */
+.stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 2.5rem; }
+@media (max-width: 600px) { .stat-row { grid-template-columns: repeat(2, 1fr); } }
+.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.1rem 1rem; }
+.stat-num { font-family: 'DM Mono', monospace; font-size: 36px; font-weight: 500; line-height: 1; margin-bottom: 4px; }
+.stat-lbl { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: var(--text3); }
+.stat-sub { font-size: 11px; color: var(--text2); margin-top: 4px; }
+
+/* SECTION HEADER */
+.section-header { display: flex; align-items: center; gap: 12px; margin: 2.5rem 0 1rem; }
+.section-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: .16em; text-transform: uppercase; color: var(--text3); white-space: nowrap; }
+.section-line { flex: 1; height: 1px; background: var(--border); }
+
+/* PARTICIPANTS GRID */
+.participants-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+.p-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.1rem; }
+.p-name { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+.p-meta { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text2); margin-bottom: 8px; }
+.p-time { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text3); }
+.p-dots { display: flex; gap: 5px; align-items: center; }
+.p-dot-group { display: flex; align-items: center; gap: 3px; font-family: 'DM Mono', monospace; font-size: 10px; }
+.pdot { width: 7px; height: 7px; border-radius: 50%; }
+.pdot-g { background: var(--green); }
+.pdot-y { background: var(--yellow); }
+.pdot-r { background: var(--red); }
+.pdot-n { background: var(--surface2); border: 1px solid var(--border2); }
+.p-sep { width: 1px; height: 10px; background: var(--border2); margin: 0 2px; }
+
+/* MEASURES TABLE */
+.measures-table { display: flex; flex-direction: column; gap: 6px; }
+.m-row { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: .65rem 1rem; }
+.m-row-top { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.m-code { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text3); min-width: 48px; padding: 2px 6px; border: 1px solid var(--border); border-radius: 4px; }
+.m-name { font-size: 12px; color: var(--text); flex: 1; }
+.m-consensus { font-family: 'DM Mono', monospace; font-size: 9px; padding: 2px 10px; border-radius: 20px; white-space: nowrap; }
+.mc-g { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+.mc-y { background: var(--yellow-bg); color: var(--yellow); border: 1px solid var(--yellow-border); }
+.mc-r { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
+.mc-split { background: rgba(255,255,255,0.05); color: var(--text2); border: 1px solid var(--border2); }
+.mc-empty { background: transparent; color: var(--text3); border: 1px solid var(--border); }
+
+/* DISTRIBUTION BAR */
+.dist-bar { height: 6px; border-radius: 3px; overflow: hidden; display: flex; gap: 1px; }
+.dist-seg { height: 100%; border-radius: 2px; transition: width .5s ease; min-width: 0; }
+.dist-seg-g { background: var(--green); }
+.dist-seg-y { background: var(--yellow); }
+.dist-seg-r { background: var(--red); }
+.dist-seg-n { background: var(--surface2); border: 1px solid var(--border2); }
+.dist-counts { display: flex; gap: 12px; margin-top: 5px; }
+.dist-count { font-family: 'DM Mono', monospace; font-size: 9px; display: flex; align-items: center; gap: 4px; }
+.dist-dot { width: 6px; height: 6px; border-radius: 50%; }
+
+/* EMPTY STATE */
+.empty-state { text-align: center; padding: 4rem 2rem; }
+.empty-icon { font-size: 3rem; margin-bottom: 1rem; opacity: .4; }
+.empty-title { font-size: 1.1rem; font-weight: 300; color: var(--text2); margin-bottom: .5rem; }
+.empty-sub { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text3); }
+.empty-link { display: inline-block; margin-top: 1.5rem; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; padding: 8px 20px; border-radius: 20px; border: 1px solid var(--accent); color: var(--accent); text-decoration: none; background: var(--green-bg); }
+.empty-link:hover { background: rgba(168,217,106,0.2); }
+
+/* LOADING */
+.loading { text-align: center; padding: 4rem 2rem; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text3); }
+
+/* FOOTER */
+.page-footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+.footer-link { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; padding: 6px 14px; border-radius: 20px; border: 1px solid var(--accent); color: var(--accent); text-decoration: none; background: var(--green-bg); }
+.footer-link:hover { background: rgba(168,217,106,0.2); }
+.footer-meta { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text3); }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="header">
+    <div class="header-left">
+      <div class="header-tag">EDGE Assessment v3.1.0 · Charrette 2026</div>
+      <h1>Resultados del <span>Charrette</span></h1>
+      <div class="header-meta">SALVUS · Hermosillo, Sonora · Mixed Use · 2,623 m²</div>
+    </div>
+    <div class="refresh-area">
+      <div class="refresh-status"><div class="pulse"></div><span id="refresh-lbl">Actualizando…</span></div>
+      <button class="btn-refresh" onclick="loadResults()">↻ Actualizar</button>
+    </div>
+  </div>
+
+  <!-- STAT CARDS -->
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="stat-num" id="stat-participants" style="color:var(--accent)">—</div>
+      <div class="stat-lbl">Participantes</div>
+      <div class="stat-sub" id="stat-participants-sub">esperando respuestas</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="stat-green" style="color:var(--green)">—</div>
+      <div class="stat-lbl">Medidas con mayoría verde</div>
+      <div class="stat-sub" id="stat-green-sub">comprometidas por consenso</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="stat-split" style="color:var(--yellow)">—</div>
+      <div class="stat-lbl">Medidas divididas</div>
+      <div class="stat-sub">requieren discusión</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="stat-red" style="color:var(--red)">—</div>
+      <div class="stat-lbl">Medidas con mayoría roja</div>
+      <div class="stat-sub">descartadas por consenso</div>
+    </div>
+  </div>
+
+  <div id="main-content">
+    <div class="loading">Cargando resultados…</div>
+  </div>
+
+  <div class="page-footer">
+    <a href="/index.html" class="footer-link">← Volver al semáforo</a>
+    <div class="footer-meta" id="last-update">Última actualización: —</div>
+  </div>
+
+</div>
+
+<script>
+const MEASURES = [
+  { code:"MEM09", name:"Aislante en cubierta",                     sec:"Envolvente" },
+  { code:"EEM07", name:"Techo verde",                              sec:"Envolvente" },
+  { code:"EEM18", name:"Calentadores de agua alta eficiencia",     sec:"Energía — mecánicos" },
+  { code:"EEM22", name:"Iluminación eficiente interior",           sec:"Energía — iluminación" },
+  { code:"EEM23", name:"Iluminación eficiente exterior",           sec:"Energía — iluminación" },
+  { code:"EEM24", name:"Controles de iluminación",                 sec:"Energía — iluminación" },
+  { code:"EEM30", name:"Submedidores calefacción/enfriamiento",    sec:"Energía — monitoreo" },
+  { code:"EEM31", name:"Medidores inteligentes de energía",        sec:"Energía — monitoreo" },
+  { code:"EEM32", name:"Correcciones de factor de potencia",       sec:"Energía — monitoreo" },
+  { code:"EEM33", name:"Energía renovable — sistema FV",           sec:"Energía — monitoreo" },
+  { code:"WEM01", name:"Regaderas eficientes",                     sec:"Agua — muebles" },
+  { code:"WEM02", name:"Llaves de mano eficientes",                sec:"Agua — muebles" },
+  { code:"WEM07", name:"Urinales de muy bajo consumo",             sec:"Agua — muebles" },
+  { code:"WEM04", name:"WC de bajo flujo",                         sec:"Agua — muebles" },
+  { code:"WEM08", name:"Llaves de cocina eficientes",              sec:"Agua — muebles" },
+  { code:"WEM13", name:"Sistema de riego eficiente",               sec:"Agua — recuperación" },
+  { code:"WEM15", name:"Tratamiento y reciclaje aguas residuales", sec:"Agua — recuperación" },
+  { code:"WEM16", name:"Recuperación de agua de condensados",      sec:"Agua — recuperación" },
+  { code:"WEM17", name:"Medidores inteligentes de agua",           sec:"Agua — recuperación" },
+];
+
+const TOTAL = MEASURES.length;
+let lastFetch = null;
+let refreshTimer = null;
+
+async function loadResults() {
+  try {
+    const res = await fetch('/api/results');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const { submissions } = await res.json();
+    lastFetch = new Date();
+    render(submissions || []);
+    document.getElementById('last-update').textContent =
+      'Última actualización: ' + lastFetch.toLocaleTimeString('es-MX', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+    document.getElementById('refresh-lbl').textContent = 'En vivo · actualiza cada 30s';
+  } catch(e) {
+    document.getElementById('refresh-lbl').textContent = 'Error al cargar';
+    document.getElementById('main-content').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">⚠️</div>
+        <div class="empty-title">No se pudieron cargar los resultados</div>
+        <div class="empty-sub">${e.message}</div>
+      </div>`;
+  }
+}
+
+function render(submissions) {
+  const n = submissions.length;
+
+  // Aggregate decisions per measure
+  const agg = {};
+  MEASURES.forEach(m => { agg[m.code] = { g:0, y:0, r:0, n:0 }; });
+  submissions.forEach(s => {
+    MEASURES.forEach(m => {
+      const v = (s.decisions || {})[m.code];
+      if (v === 'g' || v === 'y' || v === 'r') agg[m.code][v]++;
+      else agg[m.code].n++;
+    });
+  });
+
+  // Compute consensus for each measure
+  function consensus(code) {
+    if (n === 0) return 'empty';
+    const { g, y, r } = agg[code];
+    const max = Math.max(g, y, r);
+    if (max === 0) return 'empty';
+    const winners = [g===max&&'g', y===max&&'y', r===max&&'r'].filter(Boolean);
+    if (winners.length > 1) return 'split';
+    return winners[0];
+  }
+
+  // Update stat cards
+  document.getElementById('stat-participants').textContent = n;
+  document.getElementById('stat-participants-sub').textContent = n === 1 ? '1 respuesta registrada' : `${n} respuestas registradas`;
+
+  let greenCount = 0, splitCount = 0, redCount = 0;
+  MEASURES.forEach(m => {
+    const c = consensus(m.code);
+    if (c === 'g') greenCount++;
+    else if (c === 'split') splitCount++;
+    else if (c === 'r') redCount++;
+  });
+  document.getElementById('stat-green').textContent = greenCount;
+  document.getElementById('stat-split').textContent = splitCount;
+  document.getElementById('stat-red').textContent = redCount;
+
+  if (n === 0) {
+    document.getElementById('main-content').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">📋</div>
+        <div class="empty-title">Aún no hay respuestas registradas</div>
+        <div class="empty-sub">Comparte el link del semáforo con el equipo</div>
+        <a href="/index.html" class="empty-link">Ir al semáforo →</a>
+      </div>`;
+    return;
+  }
+
+  // Group sections
+  const sections = [...new Set(MEASURES.map(m => m.sec))];
+
+  // Participants section
+  let participantsHtml = `
+    <div class="section-header">
+      <div class="section-label">Participantes (${n})</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="participants-grid">`;
+
+  submissions.forEach(s => {
+    const p = s.participant || {};
+    const d = s.decisions || {};
+    const vals = Object.values(d);
+    const g = vals.filter(v=>v==='g').length;
+    const y = vals.filter(v=>v==='y').length;
+    const r = vals.filter(v=>v==='r').length;
+    const nd = TOTAL - g - y - r;
+    const when = s.submittedAt
+      ? new Date(s.submittedAt).toLocaleTimeString('es-MX', { hour:'2-digit', minute:'2-digit' })
+      : '—';
+    const cargo = [p.cargo, p.rol].filter(x => x && x !== '—').join(' · ');
+
+    participantsHtml += `
+      <div class="p-card">
+        <div class="p-name">${esc(p.nombre || '—')}</div>
+        ${cargo ? `<div class="p-meta">${esc(cargo)}</div>` : ''}
+        <div class="p-dots" style="margin-bottom:8px">
+          <div class="p-dot-group"><div class="pdot pdot-g"></div><span style="color:var(--green)">${g}</span></div>
+          <div class="p-sep"></div>
+          <div class="p-dot-group"><div class="pdot pdot-y"></div><span style="color:var(--yellow)">${y}</span></div>
+          <div class="p-sep"></div>
+          <div class="p-dot-group"><div class="pdot pdot-r"></div><span style="color:var(--red)">${r}</span></div>
+          <div class="p-sep"></div>
+          <div class="p-dot-group"><div class="pdot pdot-n"></div><span style="color:var(--text3)">${nd}</span></div>
+        </div>
+        <div class="p-time">${when}</div>
+      </div>`;
+  });
+  participantsHtml += `</div>`;
+
+  // Measures section
+  let measuresHtml = '';
+  sections.forEach(sec => {
+    const items = MEASURES.filter(m => m.sec === sec);
+    measuresHtml += `
+      <div class="section-header">
+        <div class="section-label">${sec}</div>
+        <div class="section-line"></div>
+      </div>
+      <div class="measures-table">`;
+
+    items.forEach(m => {
+      const { g, y, r } = agg[m.code];
+      const nd = n - g - y - r;
+      const total = n;
+      const c = consensus(m.code);
+      const consensusLabel =
+        c === 'g' ? `<span class="m-consensus mc-g">Mayoría verde</span>` :
+        c === 'y' ? `<span class="m-consensus mc-y">Mayoría amarilla</span>` :
+        c === 'r' ? `<span class="m-consensus mc-r">Mayoría roja</span>` :
+        c === 'split' ? `<span class="m-consensus mc-split">Dividido</span>` :
+        `<span class="m-consensus mc-empty">Sin votos</span>`;
+
+      const pct = (v) => total > 0 ? Math.round(v/total*100) : 0;
+
+      measuresHtml += `
+        <div class="m-row">
+          <div class="m-row-top">
+            <div class="m-code">${m.code}</div>
+            <div class="m-name">${esc(m.name)}</div>
+            ${consensusLabel}
+          </div>
+          <div class="dist-bar">
+            <div class="dist-seg dist-seg-g" style="width:${pct(g)}%"></div>
+            <div class="dist-seg dist-seg-y" style="width:${pct(y)}%"></div>
+            <div class="dist-seg dist-seg-r" style="width:${pct(r)}%"></div>
+            <div class="dist-seg dist-seg-n" style="flex:1"></div>
+          </div>
+          <div class="dist-counts">
+            <div class="dist-count"><div class="dist-dot" style="background:var(--green)"></div><span style="color:var(--green)">${g}</span></div>
+            <div class="dist-count"><div class="dist-dot" style="background:var(--yellow)"></div><span style="color:var(--yellow)">${y}</span></div>
+            <div class="dist-count"><div class="dist-dot" style="background:var(--red)"></div><span style="color:var(--red)">${r}</span></div>
+            <div class="dist-count"><div class="dist-dot" style="background:var(--surface2);border:1px solid var(--border2)"></div><span style="color:var(--text3)">${nd} sin decidir</span></div>
+          </div>
+        </div>`;
+    });
+
+    measuresHtml += `</div>`;
+  });
+
+  document.getElementById('main-content').innerHTML = participantsHtml + measuresHtml;
+}
+
+function esc(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// Load on mount + auto-refresh every 30s
+loadResults();
+refreshTimer = setInterval(loadResults, 30000);
+</script>
+</body>
+</html>
