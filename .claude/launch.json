@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "salvus-edge",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "-p", "3456", "C:\\Users\\glend\\salvus-edge"],
+      "port": 3456
+    }
+  ]
+}
